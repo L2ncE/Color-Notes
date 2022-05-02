@@ -1,0 +1,432 @@
+openapi: 3.0.1
+info:
+  title: Swagger Petstore
+  description: "微信小程序自助笔记的接口文档"
+  termsOfService: http://gitee/fanli666
+  contact:
+    email: 1626104789@qq.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+  - url: https://petstore.swagger.io/v2
+  - url: http://petstore.swagger.io/v2
+tags:
+  - name: user
+    description: Operations about user
+  - name: note
+    description: Operations about note
+  - name: notebook
+    description: Operations about noteBook
+  - name: img
+    description: Operations about img
+paths:
+  /user/signup:
+    post:
+      tags:
+        - user
+      summary: Login by code
+      operationId: signup
+      requestBody:
+        description: user login by code,if user is not exist,add user
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                code:
+                  type: string
+              required:
+                - code
+            example:
+              code: 123445
+      responses:
+        200:
+          description: login successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+  /note/upload:
+    post:
+      tags:
+        - note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                noteName:
+                  type: string
+                delta:
+                  type: string
+                  format: applicaton/json
+              required:
+                - delta
+      responses:
+        200:
+          description: upload successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  noteId:
+                    type: string
+        400:
+          description: upload error
+        401:
+          description: delta is empty
+        402:
+          description: delta is too larger
+        403:
+          description: notes is too much
+  /note/update:
+    post:
+      tags:
+        - note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                noteId:
+                  type: string
+                noteName:
+                  type: string
+                delta:
+                  type: string
+                  format: application/json
+              required:
+                - noteId
+                - delta
+      responses:
+        200:
+          description: update successful
+        400:
+          description: update error
+        401:
+          description: delta is empty
+        402:
+          description: delta is too larger
+        403:
+          description: delta is error
+        404:
+          description: noteId is empty
+        406:
+          description: noteId is not exist
+  /note/getNotes:
+    get:
+      tags:
+        - note
+      responses:
+        200:
+          description: get notes successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  noteId:
+                    type: string
+                  noteName:
+                    type: string
+                  noteBookId:
+                    type: string
+                  delta:
+                    type: string
+                    format: application/json
+                  lastUpdate:
+                    type: string
+                    format: date-time
+                  storeUp:
+                    type: boolean
+                  release:
+                    type: boolean
+        400:
+          description: get notes error
+  /note/delete:
+    post:
+      summary: delete note
+      tags:
+        - note
+      requestBody:
+        description: delete note by noteid
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                noteId:
+                  type: string
+              required:
+                - noteId
+      responses:
+        200:
+          description: delete successful
+        400:
+          description: delete error
+        401:
+          description: noteId is not exist
+  /note/storeUp:
+    post:
+      tags:
+        - note
+      summary: store up or cancel store up a note by noteId
+      description: 收藏或取消收藏一篇笔记
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                noteId:
+                  type: string
+                t:
+                  type: number
+                  description: 1 is store up,other number is cancel store up
+              required:
+                - noteId
+      responses:
+        200:
+          description: store up successful
+        201:
+          description: cancel store up successful
+        400:
+          description: store up or cancel store up error
+        401:
+          description: noteId is empty
+        402:
+          description: noteId is not exist
+  /note/release:
+    post:
+      tags:
+        - note
+      summary: release or cancel release a note by noteId
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                noteId:
+                  type: string
+                t:
+                  type: number
+                  description: 1 is release,other number is cancel release
+      responses:
+        200:
+          description: release successful
+        201:
+          description: cancel release successful
+        400:
+          description: release or cancel release error
+        401:
+          description: noteId is empty
+        402:
+          description: noteId is not exist
+  /notebook/create:
+    post:
+      tags:
+        - notebook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notebookName:
+                  type: string
+                color:
+                  type: string
+              required:
+                - notebookName
+      responses:
+        200:
+          description: create successful
+        400:
+          description: create error
+        401:
+          description: notebook'name is repeat
+        402:
+          description: notebook'name is error
+  /notebook/update:
+    post:
+      tags:
+        - notebook
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notebookId:
+                  type: string
+                notebookName:
+                  type: string
+                color:
+                  type: string
+              required:
+                - notebookId
+                - notebookName
+      responses:
+        200:
+          description: update successful
+        400:
+          description: update error
+        401:
+          description: notebook'name is repeat
+        402:
+          description: notebook'name is error
+  /img/upload:
+    post:
+      tags:
+        - img
+      requestBody:
+        content:
+          image/png:
+            schema:
+              type: object
+          image/jpeg:
+            schema:
+              type: object
+      responses:
+        200:
+          description: upload successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  imgs:
+                    type: array
+                example: imgs:['https://*.png']
+        400:
+          description: upload error
+        401:
+          description: the file is not img
+  /img/delete:
+    post:
+      tags:
+        - img
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                imgs:
+                  type: array
+              example:
+                imgs: [ "http://*.png", "http://*.png" ]
+      responses:
+        200:
+          description: delete successful
+        400:
+          description: delete error
+        401:
+          description: img is note exist
+  /img/show:
+    post:
+      tags:
+        - img
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+              example:
+                url: "http://*.png"
+      responses:
+        200:
+          description: show successful
+        400:
+          description: show error
+        401:
+          description: img is not exist
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        openid:
+          description: 小程序官方标识用户的字符串
+          type: string
+          readOnly: true
+        lastLogin:
+          description: 上次登录时间
+          type: string
+          format: date-time
+        createAt:
+          description: 注册时间（用户第一次登录的时间）
+          type: string
+          format: date-time
+          readOnly: true
+      xml:
+        name: user
+    Note:
+      type: object
+      properties:
+        openid:
+          type: string
+          readOnly: true
+        noteId:
+          description: 笔记id
+          type: string
+          readOnly: true
+        noteName:
+          description: 笔记名称，没指定则为未命名
+          type: string
+        noteBookId:
+          description: 笔记本id
+          type: string
+        delta:
+          description: 笔记内容
+          type: string
+          format: application/json
+        lastUpdate:
+          description: 上次编辑时间
+          type: string
+          format: date-time
+        storeUp:
+          description: 收藏
+          type: boolean
+          default: false
+        release:
+          description: 发布
+          type: boolean
+          default: false
+    Notebook:
+      type: object
+      properties:
+        openid:
+          type: string
+          readOnly: true
+        notebookId:
+          description: 笔记本id
+          type: string
+          readOnly: true
+        notebookName:
+          type: string
+          description: 笔记本名字
+        color:
+          description: 笔记本颜色
+          type: string
+  securitySchemes:
+    token:
+      type: apiKey
+      name: Authorization
+      in: header
