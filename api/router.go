@@ -9,7 +9,7 @@ func InitEngine() {
 	engine := gin.Default()
 	engine.Use(CORS())
 
-	engine.POST("/openid", getOpenId)
+	engine.POST("/user/signup", getOpenId)
 
 	err := engine.Run(":5556")
 	if err != nil {
