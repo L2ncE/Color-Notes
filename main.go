@@ -9,7 +9,7 @@ import (
 func main() {
 	err := dao.InitGormDB()
 	if err != nil {
-		fmt.Printf("init redis failed, err:%v\n", err)
+		fmt.Printf("init failed, err:%v\n", err)
 	} else {
 		fmt.Println("连接GORM MySQL数据库成功!")
 	}
