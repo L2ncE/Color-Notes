@@ -7,7 +7,8 @@ import (
 
 func RespErrorWithData(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
-		"info": data,
+		"info": "错误",
+		"data": data,
 	})
 }
 
