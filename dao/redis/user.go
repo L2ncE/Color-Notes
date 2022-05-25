@@ -1,16 +1,12 @@
 package redis
 
-import (
-	"fmt"
-)
+import "log"
 
-func IsRegister(userID int) { //当前用户是否注册
-	val, err := rdb.SIsMember("openid", userID).Result()
+func IsRegister(userID int) bool { //当前用户是否注册
+	flag, err := rdb.SIsMember("openid", userID).Result()
 	if err != nil {
-		panic(err)
+		log.Println("isRegister err:", err)
+		return true
 	}
-	if val == false {
-		fmt.Println("user don't like it")
-	}
-
+	return flag
 }
