@@ -5,6 +5,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/gojsonq/v2"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -34,7 +35,10 @@ func getOpenId(c *gin.Context) {
 		return
 	}
 
-	defer resp.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(resp.Body)
+
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		log.Println("read resp error", err)
