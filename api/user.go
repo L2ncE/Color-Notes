@@ -6,36 +6,40 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/thedevsaddam/gojsonq/v2"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"time"
 	"wechat/model"
 	"wechat/service"
-	tool "wechat/util"
+	"wechat/util"
 )
 
 //https://api.weixin.qq.com/sns/jscode2session?appid=wx909f50d56919e970&secret=dd7cdc3c91c868e3b69fbc497a664d4d&js_code=023hDL100VmJMN1KCQ100JkoWf0hDL1A&grant_type=authorization_code
 const (
 	code2sessionURL = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code"
-	appID           = "wx909f50d56919e970"
-	appSecret       = "f889c8e4d1609017d71b39ab90630366"
+	appID           = "wx811301ff5d288f81"
+	appSecret       = "a66357dc0589ac756030bcdbc641c410"
 )
 
 func getOpenId(c *gin.Context) {
 
-	//获取code
+	//传code
 	code := c.PostForm("code")
 
 	//调用auth.code2Session接口获取openid
 	url := fmt.Sprintf(code2sessionURL, appID, appSecret, code)
 	resp, err := http.Get(url)
 	if err != nil {
-		tool.RespErrorWithData(c, err)
+		log.Println("get openid error", err)
+		util.RespError(c, 400, "get openid error")
 		return
 	}
+
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		tool.RespErrorWithData(c, err)
+		log.Println("read resp error", err)
+		util.RespError(c, 400, "read resp error")
 		return
 	}
 	json := gojsonq.New().FromString(string(body)).Find("openid")
@@ -51,7 +55,8 @@ func getOpenId(c *gin.Context) {
 
 	err = service.RegisterUser(openId)
 	if err != nil {
-		tool.RespErrorWithData(c, err)
+		log.Println("register err:", err)
+		util.RespError(c, 400, "register err")
 		return
 	}
 
@@ -71,7 +76,7 @@ func JWT(c *gin.Context, openid string) {
 	t := jwt.NewWithClaims(jwt.SigningMethodHS256, claim)
 	s, err := t.SignedString(mySigningKey)
 	if err != nil {
-		tool.RespErrorWithData(c, err)
+		util.RespError(c, 400, err)
 	}
-	tool.RespSuccessfulWithData(c, s)
+	util.RespSuccessfulWithData(c, "get token successful", s)
 }

@@ -1,40 +1,36 @@
-package tool
+package util
 
 import (
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
 
-func RespErrorWithData(ctx *gin.Context, data interface{}) {
+func RespSuccessful(ctx *gin.Context, description interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
-		"info": "错误",
-		"data": data,
+		"code":        200,
+		"description": description,
 	})
 }
 
-func RespInternalError(ctx *gin.Context) {
-	ctx.JSON(http.StatusInternalServerError, gin.H{
-		"info": "服务器错误",
+func RespSuccessfulWithData(ctx *gin.Context, description interface{}, data interface{}) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":        200,
+		"description": description,
+		"data":        data,
 	})
 }
 
-func RespSuccessful(ctx *gin.Context) {
+func RespError(ctx *gin.Context, code int, description interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
-		"info": "成功",
+		"code":        code,
+		"description": description,
 	})
 }
 
-func RespSuccessfulWithData(ctx *gin.Context, data interface{}) {
+func RespErrorWithData(ctx *gin.Context, code int, description interface{}, data interface{}) {
 	ctx.JSON(http.StatusOK, gin.H{
-		"info": "成功",
-		"data": data,
-	})
-}
-
-func RespSuccessfulWithTwoData(ctx *gin.Context, data1 interface{}, data2 interface{}) {
-	ctx.JSON(http.StatusOK, gin.H{
-		"info":  "成功",
-		"data1": data1,
-		"data2": data2,
+		"code":        code,
+		"description": description,
+		"data":        data,
 	})
 }
