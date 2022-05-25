@@ -9,20 +9,19 @@ import (
 	"log"
 	"net/http"
 	"time"
+	"wechat/global"
 	"wechat/model"
 	"wechat/service"
 	"wechat/util"
 )
 
-//https://api.weixin.qq.com/sns/jscode2session?appid=wx909f50d56919e970&secret=dd7cdc3c91c868e3b69fbc497a664d4d&js_code=023hDL100VmJMN1KCQ100JkoWf0hDL1A&grant_type=authorization_code
 const (
 	code2sessionURL = "https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code"
-	appID           = "wx811301ff5d288f81"
-	appSecret       = "a66357dc0589ac756030bcdbc641c410"
 )
 
 func getOpenId(c *gin.Context) {
-
+	appID := global.Settings.APPID
+	appSecret := global.Settings.APPSecret
 	//传code
 	code := c.PostForm("code")
 

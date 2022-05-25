@@ -3,6 +3,8 @@ package model
 type ServerConfig struct {
 	Name      string      `mapstructure:"name"`
 	Port      int         `mapstructure:"port"`
+	APPID     string      `mapstructure:"appID"`
+	APPSecret string      `mapstructure:"appSecret"`
 	GormInfo  GormConfig  `mapstructure:"gorm"`
 	RedisInfo RedisConfig `mapstructure:"redis"`
 }
