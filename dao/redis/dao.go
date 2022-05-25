@@ -1,17 +1,19 @@
 package redis
 
 import (
+	"fmt"
 	"github.com/go-redis/redis"
 	"log"
+	"wechat/global"
 )
 
 var rdb *redis.Client
 
 func InitRedis() (err error) {
 	rdb = redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379", // redis地址
-		Password: "",               // redis密码，没有则留空
-		DB:       0,                // 默认数据库，默认是0
+		Addr:     fmt.Sprintf("%s:%d", global.Settings.RedisInfo.Host, global.Settings.Port), // redis地址
+		Password: global.Settings.RedisInfo.Password,                                         // redis密码，没有则留空
+		DB:       global.Settings.RedisInfo.DB,                                               // 默认数据库，默认是0
 	})
 
 	//通过 *redis.Client.Ping() 来检查是否成功连接到了redis服务器
