@@ -12,7 +12,7 @@ var db *gorm.DB
 
 func InitGormDB() (err error) {
 	dB, err := gorm.Open(mysql.New(mysql.Config{
-		DSN:                      "wechat:Kewa6BrXBFB63Hc7@tcp(42.192.155.29:3306)/wechat?charset=utf8mb4&parseTime=True&loc=Local",
+		DSN:                      ":@tcp(:3306)/wechat?charset=utf8mb4&parseTime=True&loc=Local",
 		DefaultStringSize:        171,
 		DisableDatetimePrecision: true,
 		DontSupportRenameIndex:   true,
