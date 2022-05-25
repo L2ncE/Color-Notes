@@ -2,19 +2,27 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"wechat/api"
 	"wechat/config"
-	"wechat/dao"
+	"wechat/dao/mysql"
+	"wechat/dao/redis"
 )
 
 func main() {
 	config.InitConfig()
 
-	if err := dao.InitGormDB(); err != nil {
-		fmt.Printf("init gorm failed, err:%v\n", err)
+	if err := mysql.InitGormDB(); err != nil {
+		log.Printf("init gorm failed, err:%v\n", err)
 		return
 	}
-	fmt.Println("连接GORM MySQL数据库成功!")
+	log.Println("连接GORM成功!")
+
+	if err := redis.InitRedis(); err != nil {
+		fmt.Printf("init redis failed, err:%v\n", err)
+		return
+	}
+	log.Println("连接Redis成功!")
 
 	api.InitEngine()
 }
