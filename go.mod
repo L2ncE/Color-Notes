@@ -7,6 +7,7 @@ require (
 	github.com/gin-gonic/gin v1.7.7
 	github.com/go-redis/redis v6.15.9+incompatible
 	github.com/go-sql-driver/mysql v1.6.0
+	github.com/robfig/cron/v3 v3.0.1
 	github.com/spf13/viper v1.11.0
 	github.com/thedevsaddam/gojsonq/v2 v2.5.2
 	gorm.io/driver/mysql v1.3.3
