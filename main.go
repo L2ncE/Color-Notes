@@ -7,7 +7,6 @@ import (
 	"wechat/config"
 	"wechat/dao/mysql"
 	"wechat/dao/redis"
-	"wechat/task"
 )
 
 func main() {
@@ -25,6 +24,5 @@ func main() {
 		log.Println("连接Redis成功!")
 	}
 
-	task.CacheTask() //执行定时任务
 	api.InitEngine()
 }

@@ -14,4 +14,4 @@ RUN go build main.go
 
 EXPOSE 5556
 
-ENTRYPOINT  ["./main"]
+//ENTRYPOINT  ["./main"]
