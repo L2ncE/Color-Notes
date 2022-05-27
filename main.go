@@ -15,15 +15,15 @@ func main() {
 
 	if err := mysql.InitGormDB(); err != nil {
 		log.Printf("init gorm failed, err:%v\n", err)
-		return
+	} else {
+		log.Println("连接GORM成功!")
 	}
-	log.Println("连接GORM成功!")
 
 	if err := redis.InitRedis(); err != nil {
 		fmt.Printf("init redis failed, err:%v\n", err)
-		return
+	} else {
+		log.Println("连接Redis成功!")
 	}
-	log.Println("连接Redis成功!")
 
 	task.CacheTask() //执行定时任务
 	api.InitEngine()

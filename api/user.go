@@ -83,3 +83,23 @@ func JWT(c *gin.Context, openid string) {
 	}
 	util.RespSuccessfulWithData(c, "get token successful", s)
 }
+
+func test(c *gin.Context) {
+	openId := c.PostForm("code")
+	flag, err := service.IsRepeatOpenId(openId)
+
+	if flag {
+		//如果是已注册的OpenId就直接返回值
+		JWT(c, openId)
+		return
+	}
+
+	err = service.RegisterUser(openId)
+	if err != nil {
+		log.Println("register err:", err)
+		util.RespError(c, 400, "register err")
+		return
+	}
+
+	JWT(c, openId)
+}
