@@ -7,9 +7,11 @@ import (
 	"wechat/config"
 	"wechat/dao/mysql"
 	"wechat/dao/redis"
+	"wechat/task"
 )
 
 func main() {
+	task.CronInit()
 	config.InitConfig()
 
 	if err := mysql.InitGormDB(); err != nil {
