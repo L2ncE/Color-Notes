@@ -6,16 +6,18 @@ import (
 	"wechat/dao/redis"
 )
 
-func CacheTask() {
+func CronInit() {
 	c := cron.New()
-	//c.AddFunc("30 3-6,20-23 * * *", func() { fmt.Println(".. in the range 3-6am, 8-11pm") })
-	//c.AddFunc("CRON_TZ=Asia/Tokyo 30 11 * * *", func() { fmt.Println("Runs at 04:30 Tokyo time every day") })
-	c.AddFunc("@hourly", func() {
+	c.Start()
+	_, err := c.AddFunc("@every 1m", func() {
 		err := redis.MoveOpenIdToMySQL()
 		if err != nil {
 			log.Println("cron err", err)
+			return
 		}
 	})
-	c.Start()
-	select {}
+	if err != nil {
+		log.Println("cron err", err)
+		return
+	}
 }
