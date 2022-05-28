@@ -7,8 +7,7 @@ import (
 )
 
 func RegisterUser(openId string) error {
-	flag, err := redis.IsOpenIdCache()
-	err = redis.AddOpenId(openId)
+	flag, err := redis.Ping()
 	if flag {
 		err = redis.AddOpenId(openId)
 		return err

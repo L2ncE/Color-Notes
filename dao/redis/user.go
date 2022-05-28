@@ -2,6 +2,7 @@ package redis
 
 import (
 	"log"
+	"time"
 	"wechat/dao/mysql"
 )
 
@@ -16,6 +17,7 @@ func IsRegister(id string) (bool, error) { //当前用户是否注册
 
 func AddOpenId(id string) error {
 	err := rdb.SAdd("openid", id).Err()
+	err = rdb.SAdd("openid_cache", id).Err()
 	if err != nil {
 		log.Println("redis add openid err", err)
 		return err
@@ -36,7 +38,14 @@ func IsOpenIdCache() (bool, error) {
 }
 
 func MoveOpenIdToMySQL() error {
-	set, err := rdb.SMembers("openid").Result()
+	defer func() {
+		go func() {
+			//延时3秒执行
+			time.Sleep(time.Second * 3)
+			rdb.Del("openid_cache")
+		}()
+	}()
+	set, err := rdb.SMembers("openid_cache").Result()
 	if err != nil {
 		log.Println("len of openid get error:", err)
 		return err
@@ -48,5 +57,18 @@ func MoveOpenIdToMySQL() error {
 			break
 		}
 	}
+	if err != nil {
+		log.Println("move error:", err)
+		return err
+	}
+	log.Println("move success")
 	return nil
+}
+
+func Ping() (bool, error) {
+	_, err := rdb.Ping().Result()
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
