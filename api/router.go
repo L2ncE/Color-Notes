@@ -1,8 +1,10 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
+	"wechat/global"
 )
 
 func InitEngine() {
@@ -11,8 +13,7 @@ func InitEngine() {
 
 	engine.POST("/user/signup", test)
 
-	//err := engine.Run(fmt.Sprintf(":%d", global.Settings.Port))
-	err := engine.Run(":5556")
+	err := engine.Run(fmt.Sprintf(":%d", global.Settings.Port))
 	if err != nil {
 		log.Printf("init error:%v\n", err)
 		return

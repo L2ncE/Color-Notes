@@ -5,6 +5,7 @@ import (
 	"log"
 	"wechat/api"
 	"wechat/config"
+	"wechat/dao/mongodb"
 	"wechat/dao/mysql"
 	"wechat/dao/redis"
 	"wechat/task"
@@ -24,6 +25,12 @@ func main() {
 		fmt.Printf("init redis failed, err:%v\n", err)
 	} else {
 		log.Println("连接Redis成功!")
+	}
+
+	if err := mongodb.InitMongoDB(); err != nil {
+		fmt.Printf("init mongo failed, err:%v\n", err)
+	} else {
+		log.Println("连接MongoDB成功!")
 	}
 
 	api.InitEngine()
