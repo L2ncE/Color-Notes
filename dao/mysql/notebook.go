@@ -44,8 +44,8 @@ func SelectNoteBookByNameAndOpenId(name string, openid string) error {
 }
 
 func SelectOpenIdByNotebookId(id int) (string, error) {
-	var book model.NoteBook
-	dbRes := db.Model(&model.NoteBook{}).Select(book.OpenId).Where("notebookId = ? ", id).First(&book)
+	book := model.NoteBook{}
+	dbRes := db.Model(&model.NoteBook{}).Select("openId").Where("notebookId = ?", id).Find(&book)
 	err := dbRes.Error
 	if err != nil {
 		return "", err
