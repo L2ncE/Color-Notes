@@ -50,12 +50,13 @@ func MoveOpenIdToMySQL() error {
 		log.Println("len of openid get error:", err)
 		return err
 	}
-	for _, v := range set {
+	for i, v := range set {
 		err := mysql.InsertOpenId(v)
 		if err != nil {
 			log.Println("insert err:", err)
 			break
 		}
+		log.Printf("moved %d info", i)
 	}
 	if err != nil {
 		log.Println("move error:", err)
