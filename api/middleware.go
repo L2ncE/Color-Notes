@@ -14,7 +14,7 @@ var mySigningKey = []byte("Wechat")
 func JWTAuth(ctx *gin.Context) {
 	token := ctx.Request.Header.Get("token")
 	if token == "" {
-		tool.RespErrorWithData(ctx, 400, "jwt get info error", "游客你好！没有您的信息,请先登录!")
+		tool.RespErrorWithData(ctx, 400, "jwt get info error", "Without your information, please log in first!")
 		ctx.Abort()
 		return
 	}
