@@ -106,6 +106,6 @@ func changeNotebookColor(ctx *gin.Context) {
 		return
 	}
 
-	util.RespSuccessful(ctx, "update name successful")
+	util.RespSuccessful(ctx, "update color successful")
 	return
 }
