@@ -6,7 +6,7 @@ import (
 	"wechat/model"
 )
 
-func RegisterStu(note model.Note) error {
+func NewNote(note model.Note) error {
 	err := mysql.InsertNote(note)
 	return err
 }
