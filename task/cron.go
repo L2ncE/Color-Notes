@@ -9,7 +9,7 @@ import (
 func CronInit() {
 	c := cron.New()
 	c.Start()
-	_, err := c.AddFunc("@every 1m", func() {
+	_, err := c.AddFunc("@every 1h", func() {
 		err := redis.MoveOpenIdToMySQL()
 		if err != nil {
 			log.Println("cron err", err)
