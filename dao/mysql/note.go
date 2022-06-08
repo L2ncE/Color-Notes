@@ -57,6 +57,16 @@ func UpdateRelease(id int) error {
 	return err
 }
 
+func UpdateNoteName(id int, name string) error {
+	dbRes := db.Model(&model.Note{}).Where("noteId = ?", id).Update("noteName", name)
+	err := dbRes.Error
+	if err != nil {
+		log.Printf("update failed, err:%v\n", err)
+		return err
+	}
+	return err
+}
+
 func SelectOpenIdByNoteId(id int) (string, error) {
 	book := model.Note{}
 	dbRes := db.Model(&model.Note{}).Select("openId").Where("noteId = ?", id).Find(&book)
