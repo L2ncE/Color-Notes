@@ -4,7 +4,7 @@ import "time"
 
 type Note struct {
 	NoteId     int       `gorm:"column:noteId"`
-	OpenId     int       `gorm:"column:openId"`
+	OpenId     string    `gorm:"column:openId"`
 	NoteName   string    `gorm:"column:noteName"`
 	LastUpdate time.Time `gorm:"column:lastUpdate"`
 	StoreUp    int       `gorm:"column:storeUp"`
