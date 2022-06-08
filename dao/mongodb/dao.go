@@ -8,6 +8,8 @@ import (
 	"wechat/global"
 )
 
+var mongoDB *mongo.Client
+
 func InitMongoDB() error {
 	clientOptions := options.Client().ApplyURI(fmt.Sprintf("mongodb://%s:%d", global.Settings.MongoDBInfo.Host, global.Settings.MongoDBInfo.Port))
 	// 连接 MongoDB
@@ -20,5 +22,6 @@ func InitMongoDB() error {
 	if err != nil {
 		return err
 	}
+	mongoDB = client
 	return nil
 }
