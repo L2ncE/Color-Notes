@@ -13,6 +13,6 @@ type Note struct {
 }
 
 type NoteContent struct {
-	noteId int
-	delta  string
+	NoteId int
+	Delta  string
 }
