@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"log"
 )
 
 //func InsertNote(noteId int) error {
@@ -32,8 +33,20 @@ func UpdateNote(noteId int, delta string) error {
 	}
 	updateResult, err := collection.UpdateOne(context.TODO(), filter, update)
 	if err != nil {
+		log.Println("update note error:", err)
 		return err
 	}
 	fmt.Printf("Matched %v documents and updated %v documents.\n", updateResult.MatchedCount, updateResult.ModifiedCount)
+	return nil
+}
+
+func DeleteNote(noteId int) error {
+	collection := mongoDB.Database("wechat").Collection("note")
+	deleteResult1, err := collection.DeleteOne(context.TODO(), bson.D{{"noteid", noteId}})
+	if err != nil {
+		log.Println("delete note error:", err)
+		return err
+	}
+	fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult1.DeletedCount)
 	return nil
 }
