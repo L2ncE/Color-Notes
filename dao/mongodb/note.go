@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"log"
+	"wechat/model"
 )
 
 //func InsertNote(noteId int) error {
@@ -49,4 +50,17 @@ func DeleteNote(noteId int) error {
 	}
 	fmt.Printf("Deleted %v documents in the trainers collection\n", deleteResult1.DeletedCount)
 	return nil
+}
+
+func SelectNote(noteId int) (string, error) {
+	collection := mongoDB.Database("wechat").Collection("note")
+	filter := bson.D{{"noteid", noteId}}
+	var result model.NoteContent
+	err := collection.FindOne(context.TODO(), filter).Decode(&result)
+	if err != nil {
+		log.Println("select note error:", err)
+		return "", err
+	}
+	fmt.Printf("Found a single document: %+v\n", result)
+	return result.Delta, nil
 }

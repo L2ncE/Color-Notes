@@ -77,3 +77,25 @@ func SelectOpenIdByNoteId(id int) (string, error) {
 	}
 	return book.OpenId, nil
 }
+
+func SelectNote(noteid int) (model.Note, error) {
+	var Note model.Note
+	dbRes := db.Model(&model.Note{}).Where("noteId = ?", noteid).Find(&Note)
+	err := dbRes.Error
+	if err != nil {
+		log.Println("select note failed, err:", err)
+		return model.Note{}, err
+	}
+	return Note, nil
+}
+
+func SelectNoteByNotebook(nbid int) ([]model.Note, error) {
+	var Note []model.Note
+	dbRes := db.Model(&model.Note{}).Where("notebookid = ?", nbid).Find(&Note)
+	err := dbRes.Error
+	if err != nil {
+		log.Println("select note failed, err:", err)
+		return []model.Note{}, err
+	}
+	return Note, nil
+}

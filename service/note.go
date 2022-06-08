@@ -4,6 +4,7 @@ import (
 	"time"
 	"wechat/dao/mongodb"
 	"wechat/dao/mysql"
+	"wechat/dao/redis"
 	"wechat/model"
 )
 
@@ -49,4 +50,29 @@ func SelectOpenIdByNoteId(id int) (string, error) {
 func ChangeNoteDelta(id int, delta string) error {
 	err := mongodb.UpdateNote(id, delta)
 	return err
+}
+
+func StoreUp(openid string, noteId int) (error, int) {
+	err, flag := redis.StoreUpNoteSet(noteId, openid)
+	return err, flag
+}
+
+func GetNoteInfo(noteid int) (model.Note, error) {
+	note, err := mysql.SelectNote(noteid)
+	return note, err
+}
+
+func GetNoteDelta(noteid int) (string, error) {
+	delta, err := mongodb.SelectNote(noteid)
+	return delta, err
+}
+
+func GetStoreCount(noteId int) (int, error) {
+	count, err := redis.NoteStoreCount(noteId)
+	return count, err
+}
+
+func GetNoteInfoByNotebook(nbid int) ([]model.Note, error) {
+	note, err := mysql.SelectNoteByNotebook(nbid)
+	return note, err
 }
