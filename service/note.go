@@ -2,6 +2,7 @@ package service
 
 import (
 	"time"
+	"wechat/dao/mongodb"
 	"wechat/dao/mysql"
 	"wechat/model"
 )
@@ -21,6 +22,11 @@ func ChangeNoteBook(Nid int, NBid int) error {
 	return err
 }
 
+func ChangeNoteName(id int, name string) error {
+	err := mysql.UpdateNoteName(id, name)
+	return err
+}
+
 func ChangeRelease(id int) error {
 	err := mysql.UpdateRelease(id)
 	return err
@@ -28,5 +34,19 @@ func ChangeRelease(id int) error {
 
 func RemoveNote(id int) error {
 	err := mysql.DeleteNote(id)
+	if err != nil {
+		return err
+	}
+	err = mongodb.DeleteNote(id)
+	return err
+}
+
+func SelectOpenIdByNoteId(id int) (string, error) {
+	openid, err := mysql.SelectOpenIdByNoteId(id)
+	return openid, err
+}
+
+func ChangeNoteDelta(id int, delta string) error {
+	err := mongodb.UpdateNote(id, delta)
 	return err
 }
