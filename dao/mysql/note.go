@@ -1,7 +1,6 @@
 package mysql
 
 import (
-	"fmt"
 	"log"
 	"time"
 	"wechat/model"
@@ -21,7 +20,7 @@ func UpdateTime(id int, time time.Time) error {
 	dbRes := db.Model(&model.Note{}).Where("noteId = ?", id).Update("lastUpdate", time)
 	err := dbRes.Error
 	if err != nil {
-		fmt.Printf("update failed, err:%v\n", err)
+		log.Printf("update failed, err:%v\n", err)
 		return err
 	}
 	return err
@@ -31,7 +30,7 @@ func UpdateNoteBook(Nid int, NBid int) error {
 	dbRes := db.Model(&model.Note{}).Where("noteId = ?", Nid).Update("noteBookId", NBid)
 	err := dbRes.Error
 	if err != nil {
-		fmt.Printf("update failed, err:%v\n", err)
+		log.Printf("update failed, err:%v\n", err)
 		return err
 	}
 	return err
@@ -42,7 +41,7 @@ func DeleteNote(id int) error {
 	dbRes := db.Where("noteId = ?", id).Delete(&note)
 	err := dbRes.Error
 	if err != nil {
-		fmt.Printf("delete failed, err:%v\n", err)
+		log.Printf("delete failed, err:%v\n", err)
 		return err
 	}
 	return err
@@ -52,8 +51,19 @@ func UpdateRelease(id int) error {
 	dbRes := db.Model(&model.Note{}).Where("noteId = ?", id).Update("release", 1)
 	err := dbRes.Error
 	if err != nil {
-		fmt.Printf("update failed, err:%v\n", err)
+		log.Printf("update failed, err:%v\n", err)
 		return err
 	}
 	return err
+}
+
+func SelectOpenIdByNoteId(id int) (string, error) {
+	book := model.Note{}
+	dbRes := db.Model(&model.Note{}).Select("openId").Where("noteId = ?", id).Find(&book)
+	err := dbRes.Error
+	if err != nil {
+		log.Println("select failed, err:", err)
+		return "", err
+	}
+	return book.OpenId, nil
 }

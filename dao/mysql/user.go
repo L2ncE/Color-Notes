@@ -1,7 +1,7 @@
 package mysql
 
 import (
-	"fmt"
+	"log"
 	"wechat/model"
 )
 
@@ -9,7 +9,7 @@ func InsertOpenId(openId string) error {
 	deres := db.Select("OpenId").Create(&model.User{OpenId: openId})
 	err := deres.Error
 	if err != nil {
-		fmt.Printf("insert failed, err:%v\n", err)
+		log.Printf("insert failed, err:%v\n", err)
 		return err
 	}
 	return err
@@ -20,6 +20,7 @@ func SelectUserByOpenId(openId string) error {
 	dbRes := db.Model(&model.User{}).Select(user).Where("OpenId = ?", openId).First(&user)
 	err := dbRes.Error
 	if err != nil {
+		log.Println("select failed, err:", err)
 		return err
 	}
 	return nil

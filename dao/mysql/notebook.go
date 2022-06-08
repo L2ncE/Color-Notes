@@ -19,6 +19,7 @@ func UpdateNoteBookName(id int, name string) error {
 	dbRes := db.Model(&model.NoteBook{}).Where("noteBookId = ?", id).Update("noteBookName", name)
 	err := dbRes.Error
 	if err != nil {
+		log.Println("update failed, err:", err)
 		return err
 	}
 	return err
@@ -28,6 +29,7 @@ func UpdateNoteBookColor(id int, color string) error {
 	dbRes := db.Model(&model.NoteBook{}).Where("noteBookId = ?", id).Update("color", color)
 	err := dbRes.Error
 	if err != nil {
+		log.Println("update failed, err:", err)
 		return err
 	}
 	return err
@@ -35,9 +37,10 @@ func UpdateNoteBookColor(id int, color string) error {
 
 func SelectNoteBookByNameAndOpenId(name string, openid string) error {
 	var book model.NoteBook
-	dbRes := db.Debug().Model(&model.NoteBook{}).Where("noteBookName = ? AND openId = ?", name, openid).First(&book)
+	dbRes := db.Model(&model.NoteBook{}).Where("noteBookName = ? AND openId = ?", name, openid).First(&book)
 	err := dbRes.Error
 	if err != nil {
+		log.Println("select failed, err:", err)
 		return err
 	}
 	return nil
@@ -48,6 +51,7 @@ func SelectOpenIdByNotebookId(id int) (string, error) {
 	dbRes := db.Model(&model.NoteBook{}).Select("openId").Where("notebookId = ?", id).Find(&book)
 	err := dbRes.Error
 	if err != nil {
+		log.Println("select failed, err:", err)
 		return "", err
 	}
 	return book.OpenId, nil
