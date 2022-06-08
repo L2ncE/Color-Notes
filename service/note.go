@@ -52,8 +52,8 @@ func ChangeNoteDelta(id int, delta string) error {
 	return err
 }
 
-func StoreUp(openid string, noteId int) (error, int) {
-	err, flag := redis.StoreUpNoteSet(noteId, openid)
+func LikeUp(openid string, noteId int) (error, int) {
+	err, flag := redis.LikeUpNoteSet(noteId, openid)
 	return err, flag
 }
 
@@ -67,8 +67,8 @@ func GetNoteDelta(noteid int) (string, error) {
 	return delta, err
 }
 
-func GetStoreCount(noteId int) (int, error) {
-	count, err := redis.NoteStoreCount(noteId)
+func GetLikeCount(noteId int) (int, error) {
+	count, err := redis.NoteLikeCount(noteId)
 	return count, err
 }
 

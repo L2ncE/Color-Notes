@@ -7,7 +7,6 @@ type Note struct {
 	OpenId     string    `gorm:"column:openId"`
 	NoteName   string    `gorm:"column:noteName"`
 	LastUpdate time.Time `gorm:"column:lastUpdate"`
-	StoreUp    int       `gorm:"column:storeUp"`
 	Release    int       `gorm:"column:release"`
 	NoteBookId int       `gorm:"column:noteBookId"`
 }
