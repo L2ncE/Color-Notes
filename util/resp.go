@@ -34,3 +34,11 @@ func RespErrorWithData(ctx *gin.Context, code int, description interface{}, data
 		"data":        data,
 	})
 }
+
+func RespSuccessfulWithInfoAndDelta(ctx *gin.Context, info interface{}, delta interface{}) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":  200,
+		"info":  info,
+		"delta": delta,
+	})
+}
