@@ -81,7 +81,7 @@ func JWT(c *gin.Context, openid string) {
 	if err != nil {
 		util.RespError(c, 400, err)
 	}
-	util.RespSuccessfulWithData(c, "get token successful", s)
+	util.RespSuccessfulWithTokenAndOpenId(c, "get token successful", s, openid)
 }
 
 func test(c *gin.Context) {
