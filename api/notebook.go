@@ -12,7 +12,10 @@ import (
 func createNotebook(ctx *gin.Context) {
 	IOpenId, _ := ctx.Get("openid")
 	openId := IOpenId.(string)
-	notebookName := ctx.PostForm("notebookName")
+	notebookName := ctx.PostForm("notebook_name")
+	if notebookName == "" {
+		notebookName = "未命名笔记本"
+	}
 	color := ctx.PostForm("color")
 	if color == "" {
 		color = "#DCDCDC"

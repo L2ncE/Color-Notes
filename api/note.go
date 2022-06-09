@@ -29,19 +29,23 @@ func JudgeIdentity(ctx *gin.Context, noteId int, openId string) bool {
 func uploadNote(ctx *gin.Context) {
 	IOpenId, _ := ctx.Get("openid")
 	openId := IOpenId.(string)
-	noteName := ctx.PostForm("noteName")
-	SNotebookId := ctx.PostForm("notebookid")
+	noteName := ctx.PostForm("note_name")
+	SNotebookId := ctx.PostForm("notebook_id")
 	notebookId, _ := strconv.Atoi(SNotebookId)
 
 	if noteName == "" {
 		noteName = "未命名笔记"
 	}
 
-	var cstSh, _ = time.LoadLocation("Asia/Beijing") //转化成北京时间
+	if SNotebookId == "" {
+		notebookId = 0
+	}
+
+	//var cstSh, _ = time.LoadLocation("Asia/Beijing") //转化成北京时间
 	note := model.Note{
 		OpenId:     openId,
 		NoteName:   noteName,
-		LastUpdate: time.Now().In(cstSh),
+		LastUpdate: time.Now(),
 		NoteBookId: notebookId,
 	}
 
@@ -78,8 +82,7 @@ func updateNoteDelta(ctx *gin.Context) {
 		return
 	}
 
-	var cstSh, _ = time.LoadLocation("Asia/Beijing") //转化成北京时间
-	LastUpdate := time.Now().In(cstSh)
+	LastUpdate := time.Now()
 	err = service.ChangeTime(noteId, LastUpdate)
 	if err != nil {
 		log.Println("change note time error:", err)
