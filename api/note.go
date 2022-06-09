@@ -178,7 +178,7 @@ func releaseNote(ctx *gin.Context) {
 	return
 }
 
-func storeUpNote(ctx *gin.Context) {
+func LikeUpNote(ctx *gin.Context) {
 	IOpenId, _ := ctx.Get("openid")
 	openId := IOpenId.(string)
 
@@ -188,5 +188,109 @@ func storeUpNote(ctx *gin.Context) {
 	if !JudgeIdentity(ctx, noteId, openId) {
 		return
 	}
+	err, flag := service.LikeUp(openId, noteId)
+	if err != nil || flag == 2 {
+		log.Println("like up or cancel error:", err)
+		util.RespError(ctx, 400, "like up or cancel like up error")
+		return
+	}
 
+	if flag == 1 {
+		util.RespSuccessful(ctx, "like up successful")
+		return
+	} else if flag == 0 {
+		util.RespSuccessful(ctx, "cancel like up successful")
+		return
+	}
+}
+
+func getNoteLikeCount(ctx *gin.Context) {
+	Sid := ctx.Param("id")
+	id, _ := strconv.Atoi(Sid)
+
+	count, err := service.GetLikeCount(id)
+	if err != nil {
+		log.Println("get note like up count error:", err)
+		util.RespError(ctx, 400, "get note like up count error")
+		return
+	}
+	util.RespSuccessfulWithData(ctx, "get note like up count successful", count)
+	return
+}
+
+func AgreeNote(ctx *gin.Context) {
+	IOpenId, _ := ctx.Get("openid")
+	openId := IOpenId.(string)
+
+	SNoteId := ctx.Param("id")
+	noteId, _ := strconv.Atoi(SNoteId)
+
+	if !JudgeIdentity(ctx, noteId, openId) {
+		return
+	}
+	err, flag := service.Agree(openId, noteId)
+	if err != nil || flag == 2 {
+		log.Println("agree or cancel error:", err)
+		util.RespError(ctx, 400, "agree or cancel like up error")
+		return
+	}
+
+	if flag == 1 {
+		util.RespSuccessful(ctx, "agree successful")
+		return
+	} else if flag == 0 {
+		util.RespSuccessful(ctx, "cancel agree successful")
+		return
+	}
+}
+
+func getNoteAgreeCount(ctx *gin.Context) {
+	Sid := ctx.Param("id")
+	id, _ := strconv.Atoi(Sid)
+
+	count, err := service.GetAgreeCount(id)
+	if err != nil {
+		log.Println("get note agree count error:", err)
+		util.RespError(ctx, 400, "get note agree count error")
+		return
+	}
+	util.RespSuccessfulWithData(ctx, "get note agree count successful", count)
+	return
+}
+
+func getNote(ctx *gin.Context) {
+	Sid := ctx.Param("id")
+	id, _ := strconv.Atoi(Sid)
+
+	info, err := service.GetNoteInfo(id)
+	if err != nil {
+		log.Println("get note info error:", err)
+		util.RespError(ctx, 400, "get note error")
+		return
+	}
+
+	delta, err := service.GetNoteDelta(id)
+	if err != nil {
+		log.Println("get note delta error:", err)
+		util.RespError(ctx, 400, "get note error")
+		return
+	}
+
+	util.RespSuccessfulWithInfoAndDelta(ctx, info, delta)
+	return
+}
+
+func getNoteByNotebook(ctx *gin.Context) {
+	Sid := ctx.Param("id")
+	id, _ := strconv.Atoi(Sid)
+
+	info, err := service.GetNoteInfoByNotebook(id)
+	if err != nil {
+		log.Println("get note info by notebook error:", err)
+		util.RespError(ctx, 400, "get note by notebook error")
+		return
+	}
+
+	util.RespSuccessfulWithData(ctx, "get note by notebook successful", info)
+	return
 }

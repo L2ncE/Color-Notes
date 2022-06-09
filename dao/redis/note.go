@@ -36,3 +36,35 @@ func NoteLikeCount(noteid int) (int, error) { //--- 获赞次数
 	}
 	return int(val), nil
 }
+
+func AgreeNoteSet(noteid int, openid string) (error, int) {
+	val, err := rdb.SIsMember("agree_id"+strconv.Itoa(noteid), openid).Result()
+	if err != nil {
+		log.Println("judge is agree up error:", err)
+		return err, 2
+	}
+	if val == false {
+		_, err := rdb.SAdd("agree_id"+strconv.Itoa(noteid), openid).Result()
+		if err != nil {
+			log.Println("set agree up error:", err)
+			return err, 2
+		}
+		return nil, 1
+	} else {
+		_, err := rdb.SRem("agree_id"+strconv.Itoa(noteid), openid).Result()
+		if err != nil {
+			log.Println("set agree up error:", err)
+			return err, 2
+		}
+		return nil, 0
+	}
+}
+
+func NoteAgreeCount(noteid int) (int, error) {
+	val, err := rdb.SCard("agree_id" + strconv.Itoa(noteid)).Result()
+	if err != nil {
+		log.Println("get agree up count error:", err)
+		return 0, err
+	}
+	return int(val), nil
+}

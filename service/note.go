@@ -33,6 +33,11 @@ func ChangeRelease(id int) error {
 	return err
 }
 
+func ChangeNotebookByDelete(id int) error {
+	err := mysql.UpdateNoteBookByDelete(id)
+	return err
+}
+
 func RemoveNote(id int) error {
 	err := mysql.DeleteNote(id)
 	if err != nil {
@@ -57,6 +62,11 @@ func LikeUp(openid string, noteId int) (error, int) {
 	return err, flag
 }
 
+func Agree(openid string, noteId int) (error, int) {
+	err, flag := redis.AgreeNoteSet(noteId, openid)
+	return err, flag
+}
+
 func GetNoteInfo(noteid int) (model.Note, error) {
 	note, err := mysql.SelectNote(noteid)
 	return note, err
@@ -69,6 +79,11 @@ func GetNoteDelta(noteid int) (string, error) {
 
 func GetLikeCount(noteId int) (int, error) {
 	count, err := redis.NoteLikeCount(noteId)
+	return count, err
+}
+
+func GetAgreeCount(noteId int) (int, error) {
+	count, err := redis.NoteAgreeCount(noteId)
 	return count, err
 }
 
