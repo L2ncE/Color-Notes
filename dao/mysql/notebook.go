@@ -56,3 +56,14 @@ func SelectOpenIdByNotebookId(id int) (string, error) {
 	}
 	return book.OpenId, nil
 }
+
+func DeleteNotebook(id int) error {
+	var notebook []model.NoteBook
+	dbRes := db.Where("notebookId = ?", id).Delete(&notebook)
+	err := dbRes.Error
+	if err != nil {
+		log.Printf("delete failed, err:%v\n", err)
+		return err
+	}
+	return err
+}

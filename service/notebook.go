@@ -37,3 +37,8 @@ func SelectOpenIdByNotebookId(id int) (string, error) {
 	Nid, err := mysql.SelectOpenIdByNotebookId(id)
 	return Nid, err
 }
+
+func RemoveNotebook(id int) error {
+	err := mysql.DeleteNotebook(id)
+	return err
+}
