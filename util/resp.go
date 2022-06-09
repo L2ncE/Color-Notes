@@ -42,3 +42,12 @@ func RespSuccessfulWithInfoAndDelta(ctx *gin.Context, info interface{}, delta in
 		"delta": delta,
 	})
 }
+
+func RespSuccessfulWithTokenAndOpenId(ctx *gin.Context, description interface{}, token interface{}, openid interface{}) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":        200,
+		"description": description,
+		"token":       token,
+		"openid":      openid,
+	})
+}
