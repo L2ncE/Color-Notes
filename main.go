@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/fsnotify/fsnotify"
+	"github.com/spf13/viper"
 	"log"
 	"wechat/api"
 	"wechat/config"
@@ -14,7 +16,9 @@ import (
 func main() {
 	task.CronInit()
 	config.InitConfig()
-
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		fmt.Println("Config file changed:", e.Name)
+	})
 	if err := mysql.InitGormDB(); err != nil {
 		log.Printf("init gorm failed, err:%v\n", err)
 	} else {
