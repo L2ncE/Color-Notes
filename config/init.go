@@ -1,6 +1,7 @@
 package config
 
 import (
+	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 	"log"
 	"wechat/global"
@@ -24,4 +25,10 @@ func InitConfig() {
 	}
 	// 传递给全局变量
 	global.Settings = serverConfig
+
+	//热重载配置
+	v.OnConfigChange(func(e fsnotify.Event) {
+		log.Printf("config file:%s Op:%s\n", e.Name, e.Op)
+	})
+	v.WatchConfig()
 }
