@@ -2,23 +2,22 @@ package main
 
 import (
 	"fmt"
-	"github.com/fsnotify/fsnotify"
-	"github.com/spf13/viper"
+	uuid "github.com/satori/go.uuid"
 	"log"
 	"wechat/api"
 	"wechat/config"
 	"wechat/dao/mongodb"
 	"wechat/dao/mysql"
 	"wechat/dao/redis"
+	"wechat/pprof"
 	"wechat/task"
 )
 
 func main() {
 	task.CronInit()
 	config.InitConfig()
-	viper.OnConfigChange(func(e fsnotify.Event) {
-		fmt.Println("Config file changed:", e.Name)
-	})
+	pprof.InitPprofMonitor()
+
 	if err := mysql.InitGormDB(); err != nil {
 		log.Printf("init gorm failed, err:%v\n", err)
 	} else {
@@ -36,6 +35,15 @@ func main() {
 	} else {
 		log.Println("连接MongoDB成功!")
 	}
+
+	u1 := uuid.NewV4()
+	fmt.Printf("UUIDv4: %s\n", u1)
+	u2, err := uuid.FromString("f5394eef-e576-4709-9e4b-a7c231bd34a4")
+	if err != nil {
+		fmt.Printf("Something gone wrong: %s", err)
+		return
+	}
+	fmt.Printf("Successfully parsed: %s", u2)
 
 	api.InitEngine()
 }

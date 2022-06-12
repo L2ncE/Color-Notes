@@ -5,14 +5,16 @@ import (
 	"wechat/model"
 )
 
-func InsertNoteBook(note model.NoteBook) error {
-	dbres := db.Select("openId", "noteBookName", "color").Create(&model.NoteBook{OpenId: note.OpenId, NoteBookName: note.NoteBookName, Color: note.Color})
-	err := dbres.Error
+func InsertNoteBook(note model.NoteBook) (error, int) {
+	var Note model.NoteBook
+	dbRes := db.Select("openId", "noteBookName", "color").Create(&model.NoteBook{OpenId: note.OpenId, NoteBookName: note.NoteBookName, Color: note.Color})
+	err := dbRes.Error
 	if err != nil {
 		log.Println("insert failed, err:", err)
-		return err
+		return err, -1
 	}
-	return err
+	db.Model(&model.NoteBook{}).Select("notebookId").Last(&Note)
+	return err, Note.NoteBookId
 }
 
 func UpdateNoteBookName(id int, name string) error {
@@ -66,4 +68,15 @@ func DeleteNotebook(id int) error {
 		return err
 	}
 	return err
+}
+
+func SelectNotebookByOpenid(openid string) ([]model.NoteBook, error) {
+	var NoteBook []model.NoteBook
+	dbRes := db.Model(&model.NoteBook{}).Where("openid = ?", openid).Find(&NoteBook)
+	err := dbRes.Error
+	if err != nil {
+		log.Println("select note failed, err:", err)
+		return []model.NoteBook{}, err
+	}
+	return NoteBook, nil
 }

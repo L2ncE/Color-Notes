@@ -17,6 +17,7 @@ func InitEngine() {
 	notebookGroup := engine.Group("/notebook")
 	{
 		notebookGroup.Use(JWTAuth)
+		notebookGroup.GET("/", getNotebook)
 		notebookGroup.POST("/create", createNotebook)
 		notebookGroup.PUT("/update/name/:id", changeNotebookName)
 		notebookGroup.PUT("/update/color/:id", changeNotebookColor)

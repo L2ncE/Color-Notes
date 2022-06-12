@@ -8,20 +8,20 @@ import (
 	"wechat/model"
 )
 
-//func InsertNote(noteId int) error {
-//	collection := mongoDB.Database("wechat").Collection("note")
-//	doc := model.NoteContent{
-//		NoteId: noteId,
-//		Delta:  "",
-//	}
-//	insert, err := collection.InsertOne(context.TO。DO), doc)
-//	if err != nil {
-//		fmt.Println(err)
-//		return err
-//	}
-//	fmt.Println("Inserted a Single Document: ", insert.InsertedID)
-//	return nil
-//}
+func InsertNote(noteId int) error {
+	collection := mongoDB.Database("wechat").Collection("note")
+	doc := model.NoteContent{
+		NoteId: noteId,
+		Delta:  "",
+	}
+	insert, err := collection.InsertOne(context.TODO(), doc)
+	if err != nil {
+		fmt.Println(err)
+		return err
+	}
+	fmt.Println("Inserted a Single Document: ", insert.InsertedID)
+	return nil
+}
 
 func UpdateNote(noteId int, delta string) error {
 	collection := mongoDB.Database("wechat").Collection("note")

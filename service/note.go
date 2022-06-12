@@ -8,9 +8,9 @@ import (
 	"wechat/model"
 )
 
-func NewNote(note model.Note) error {
-	err := mysql.InsertNote(note)
-	return err
+func NewNote(note model.Note) (error, int) {
+	err, id := mysql.InsertNote(note)
+	return err, id
 }
 
 func ChangeTime(id int, time time.Time) error {
@@ -53,7 +53,8 @@ func SelectOpenIdByNoteId(id int) (string, error) {
 }
 
 func ChangeNoteDelta(id int, delta string) error {
-	err := mongodb.UpdateNote(id, delta)
+	err := mongodb.InsertNote(id)
+	err = mongodb.UpdateNote(id, delta)
 	return err
 }
 

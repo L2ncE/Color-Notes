@@ -6,9 +6,9 @@ import (
 	"wechat/model"
 )
 
-func NewNoteBook(note model.NoteBook) error {
-	err := mysql.InsertNoteBook(note)
-	return err
+func NewNoteBook(note model.NoteBook) (error, int) {
+	err, id := mysql.InsertNoteBook(note)
+	return err, id
 }
 
 func ChangeNoteBookName(id int, name string) error {
@@ -41,4 +41,9 @@ func SelectOpenIdByNotebookId(id int) (string, error) {
 func RemoveNotebook(id int) error {
 	err := mysql.DeleteNotebook(id)
 	return err
+}
+
+func GetNotebookByOpenid(openid string) (error, []model.NoteBook) {
+	err, notebook := mysql.SelectNotebookByOpenid(openid)
+	return notebook, err
 }

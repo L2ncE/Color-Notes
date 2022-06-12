@@ -39,7 +39,7 @@ func createNotebook(ctx *gin.Context) {
 		Color:        color,
 	}
 
-	err = service.NewNoteBook(notebook)
+	err, id := service.NewNoteBook(notebook)
 
 	if err != nil {
 		log.Println("create new notebook error:", err)
@@ -47,7 +47,7 @@ func createNotebook(ctx *gin.Context) {
 		return
 	}
 
-	util.RespSuccessful(ctx, "create successful")
+	util.RespSuccessfulWithData(ctx, "create successful", id)
 	return
 }
 
@@ -147,5 +147,20 @@ func deleteNotebook(ctx *gin.Context) {
 	}
 
 	util.RespSuccessful(ctx, "delete notebook successful")
+	return
+}
+
+func getNotebook(ctx *gin.Context) {
+	IOpenId, _ := ctx.Get("openid")
+	openId := IOpenId.(string)
+
+	err, notebook := service.GetNotebookByOpenid(openId)
+	if err != nil {
+		log.Println("get notebook error:", err)
+		util.RespError(ctx, 400, "get notebook error")
+		return
+	}
+
+	util.RespSuccessfulWithData(ctx, "get notebook successful", notebook)
 	return
 }

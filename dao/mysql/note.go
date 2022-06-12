@@ -6,14 +6,16 @@ import (
 	"wechat/model"
 )
 
-func InsertNote(note model.Note) error {
-	dbres := db.Select("openId", "noteName", "lastUpdate", "noteBookId").Create(&model.Note{OpenId: note.OpenId, NoteName: note.NoteName, LastUpdate: note.LastUpdate, NoteBookId: note.NoteBookId})
-	err := dbres.Error
+func InsertNote(note model.Note) (error, int) {
+	var Note model.Note
+	dbRes := db.Select("openId", "noteName", "lastUpdate", "noteBookId").Create(&model.Note{OpenId: note.OpenId, NoteName: note.NoteName, LastUpdate: note.LastUpdate, NoteBookId: note.NoteBookId})
+	err := dbRes.Error
 	if err != nil {
 		log.Println("insert failed, err:", err)
-		return err
+		return err, -1
 	}
-	return err
+	db.Model(&model.Note{}).Select("noteId").Last(&Note)
+	return err, Note.NoteId
 }
 
 func UpdateTime(id int, time time.Time) error {

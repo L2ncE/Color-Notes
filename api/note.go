@@ -49,13 +49,13 @@ func uploadNote(ctx *gin.Context) {
 		NoteBookId: notebookId,
 	}
 
-	err := service.NewNote(note)
+	err, id := service.NewNote(note)
 	if err != nil {
 		log.Println("upload note error:", err)
 		util.RespError(ctx, 400, "upload error")
 		return
 	}
-	util.RespSuccessful(ctx, "upload successful")
+	util.RespSuccessfulWithData(ctx, "upload successful", id)
 	return
 }
 
