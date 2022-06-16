@@ -53,8 +53,7 @@ func SelectOpenIdByNoteId(id int) (string, error) {
 }
 
 func ChangeNoteDelta(id int, delta string) error {
-	err := mongodb.InsertNote(id)
-	err = mongodb.UpdateNote(id, delta)
+	err := mongodb.UpdateNote(id, delta)
 	return err
 }
 

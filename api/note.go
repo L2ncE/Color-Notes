@@ -5,6 +5,7 @@ import (
 	"log"
 	"strconv"
 	"time"
+	"wechat/dao/mongodb"
 	"wechat/model"
 	"wechat/service"
 	"wechat/util"
@@ -50,6 +51,9 @@ func uploadNote(ctx *gin.Context) {
 	}
 
 	err, id := service.NewNote(note)
+
+	err = mongodb.InsertNote(id)
+
 	if err != nil {
 		log.Println("upload note error:", err)
 		util.RespError(ctx, 400, "upload error")
