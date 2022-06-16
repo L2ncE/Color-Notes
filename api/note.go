@@ -284,10 +284,12 @@ func getNote(ctx *gin.Context) {
 }
 
 func getNoteByNotebook(ctx *gin.Context) {
+	IOpenId, _ := ctx.Get("openid")
+	openId := IOpenId.(string)
 	Sid := ctx.Param("id")
 	id, _ := strconv.Atoi(Sid)
 
-	info, err := service.GetNoteInfoByNotebook(id)
+	info, err := service.GetNoteInfoByNotebook(id, openId)
 	if err != nil {
 		log.Println("get note info by notebook error:", err)
 		util.RespError(ctx, 400, "get note by notebook error")

@@ -101,9 +101,9 @@ func SelectNote(noteid int) (model.Note, error) {
 	return Note, nil
 }
 
-func SelectNoteByNotebook(nbid int) ([]model.Note, error) {
+func SelectNoteByNotebook(nbid int, openid string) ([]model.Note, error) {
 	var Note []model.Note
-	dbRes := db.Model(&model.Note{}).Where("notebookid = ?", nbid).Find(&Note)
+	dbRes := db.Model(&model.Note{}).Where("notebookid = ? AND openid = ?", nbid, openid).Find(&Note)
 	err := dbRes.Error
 	if err != nil {
 		log.Println("select note failed, err:", err)

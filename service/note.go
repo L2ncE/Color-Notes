@@ -88,7 +88,7 @@ func GetAgreeCount(noteId int) (int, error) {
 	return count, err
 }
 
-func GetNoteInfoByNotebook(nbid int) ([]model.Note, error) {
-	note, err := mysql.SelectNoteByNotebook(nbid)
+func GetNoteInfoByNotebook(nbid int, openid string) ([]model.Note, error) {
+	note, err := mysql.SelectNoteByNotebook(nbid, openid)
 	return note, err
 }
