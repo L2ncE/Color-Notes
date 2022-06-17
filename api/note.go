@@ -303,3 +303,15 @@ func getNoteByNotebook(ctx *gin.Context) {
 	util.RespSuccessfulWithData(ctx, "get note by notebook successful", info)
 	return
 }
+
+func getCommunityNote(ctx *gin.Context) {
+	info, err := service.GetNoteByRelease()
+	if err != nil {
+		log.Println("get note info by release error:", err)
+		util.RespError(ctx, 400, "get note by release error")
+		return
+	}
+
+	util.RespSuccessfulWithData(ctx, "get note by release successful", info)
+	return
+}

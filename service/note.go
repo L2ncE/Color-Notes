@@ -91,3 +91,8 @@ func GetNoteInfoByNotebook(nbid int, openid string) ([]model.Note, error) {
 	note, err := mysql.SelectNoteByNotebook(nbid, openid)
 	return note, err
 }
+
+func GetNoteByRelease() ([]model.Note, error) {
+	note, err := mysql.SelectNoteByReleaseAndRandom()
+	return note, err
+}

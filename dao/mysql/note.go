@@ -111,3 +111,14 @@ func SelectNoteByNotebook(nbid int, openid string) ([]model.Note, error) {
 	}
 	return Note, nil
 }
+
+func SelectNoteByReleaseAndRandom() ([]model.Note, error) {
+	var Note []model.Note
+	dbRes := db.Model(&model.Note{}).Where("releaseStatus = ?", 1).Order("noteid desc").Find(&Note)
+	err := dbRes.Error
+	if err != nil {
+		log.Println("select note failed, err:", err)
+		return []model.Note{}, err
+	}
+	return Note, nil
+}

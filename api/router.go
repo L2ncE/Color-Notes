@@ -29,6 +29,7 @@ func InitEngine() {
 		noteGroup.GET("/like/:id", getNoteLikeCount)
 		noteGroup.GET("/agree/:id", getNoteAgreeCount)
 		noteGroup.GET("/:id", getNote)
+		noteGroup.GET("/community", getCommunityNote)
 		{
 			noteGroup.Use(JWTAuth)
 			noteGroup.GET("/notebook/:id", getNoteByNotebook)
