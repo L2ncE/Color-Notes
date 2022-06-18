@@ -50,7 +50,7 @@ func DeleteNote(id int) error {
 }
 
 func UpdateRelease(id int) error {
-	dbRes := db.Model(&model.Note{}).Where("noteId = ?", id).Update("release", 1)
+	dbRes := db.Model(&model.Note{}).Where("noteId = ?", id).Update("releaseStatus", 1)
 	err := dbRes.Error
 	if err != nil {
 		log.Printf("update failed, err:%v\n", err)
